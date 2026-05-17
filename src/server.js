@@ -1,8 +1,3 @@
-
-process.on('uncaughtException', (err) => {
-  console.log('UNCAUGHT:', err.stack);
-});
-
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -10,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 const errorMiddleware = require("./middlewares/error.middleware");
 const userRoutes = require("./modules/user/user.routes");
-const roomRoutes = require("./modules/room/room.routes");
+const roomRoutes = require("./modules/rooms/room.routes");
 const bookingRoutes = require("./modules/booking/booking.routes");
 
 dotenv.config();

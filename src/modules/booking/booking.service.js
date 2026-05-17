@@ -1,5 +1,5 @@
 const Booking = require("./booking.model");
-const Room = require("../room/room.model");
+const Room = require("../rooms/room.model");
 const User = require("../user/user.model");
 
 const createBooking = async ({ roomId, userId, date, startTime, endTime, totalCost, specialNote }) => {
