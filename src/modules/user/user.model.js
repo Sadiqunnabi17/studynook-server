@@ -17,27 +17,38 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
       minlength: 6,
       select: false,
+    },
+    image: {
+      type: String,
+      default: "",
     },
     role: {
       type: String,
       enum: ["user", "admin"],
       default: "user",
     },
+    provider: {
+      type: String,
+      enum: ["email", "google"],
+      default: "email",
+    },
+    bookings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-// Hash password before saving
 userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
+  if (!this.isModified("password") || !this.password) return;
   this.password = await bcrypt.hash(this.password, 12);
-
 });
 
-// Compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
