@@ -1,37 +1,43 @@
 const jwt = require("jsonwebtoken");
-const asyncHandler = require("../utils/asyncHandler");
 const User = require("../modules/user/user.model");
 
-const protect = asyncHandler(async (req, res, next) => {
-  let token;
+console.log("AUTH MIDDLEWARE LOADED"); // ← add this at top
 
-  // Check HTTP-only cookie first
-  if (req.cookies?.token) {
-    token = req.cookies.token;
-  }
-  // Fallback to Authorization header
-  else if (req.headers.authorization?.startsWith("Bearer")) {
-    token = req.headers.authorization.split(" ")[1];
-  }
+const protect = async (req, res, next) => {
+  try {
+    
+    console.log("COOKIES:", req.cookies);        // ← add this
+    console.log("TOKEN:", req.cookies?.token);   // ← add this
+    
+    const token = req.cookies?.token;
 
-  if (!token) {
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized, no token",
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("DECODED:", decoded); // ← add this
+    
+    req.user = await User.findById(decoded.userId).select("-password");
+    console.log("USER:", req.user); // ← add this
+    
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    next();
+  } catch (error) {
     return res.status(401).json({
       success: false,
-      message: "Not authorized, no token",
+      message: "Invalid or expired token",
     });
   }
-
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  req.user = await User.findById(decoded.id).select("-password");
-
-  if (!req.user) {
-    return res.status(401).json({
-      success: false,
-      message: "User not found",
-    });
-  }
-
-  next();
-});
+};
 
 module.exports = protect;

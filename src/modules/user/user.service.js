@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("./user.model");
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ userId: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
@@ -82,4 +82,4 @@ const getMe = async (userId) => {
   return await User.findById(userId).select("-password");
 };
 
-module.exports = { registerUser, loginUser, googleAuth, getMe };
+module.exports = { registerUser, loginUser, googleAuth, getMe, generateToken };
