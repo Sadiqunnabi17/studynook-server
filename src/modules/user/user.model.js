@@ -24,6 +24,21 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    studentId: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    department: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    academicLevel: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     role: {
       type: String,
       enum: ["user", "admin"],

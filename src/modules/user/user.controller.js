@@ -2,6 +2,7 @@ const asyncHandler = require("../../utils/asyncHandler");
 const ApiResponse = require("../../utils/ApiResponse");
 const passport = require("passport");
 const { registerUser, loginUser, getMe } = require("./user.service");
+const User = require("./user.model");
 
 const cookieOptions = {
   httpOnly: true,
@@ -21,6 +22,18 @@ const login = asyncHandler(async (req, res) => {
   const data = await loginUser({ email, password });
   res.cookie("token", data.token, cookieOptions);
   return ApiResponse.success(res, { user: data.user, token: data.token }, "Login successful");
+});
+
+const updateProfile = asyncHandler(async (req, res) => {
+  const { academicLevel, image } = req.body;
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { academicLevel, image },
+    { new: true }
+  ).select("-password");
+
+  return ApiResponse.success(res, user, "Profile updated successfully");
 });
 
 const googleLogin = passport.authenticate("google", {
@@ -56,4 +69,5 @@ module.exports = {
   googleSuccess,
   logout,
   me,
+  updateProfile,
 };
