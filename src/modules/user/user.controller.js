@@ -7,7 +7,7 @@ const User = require("./user.model");
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
@@ -34,7 +34,7 @@ const googleCallback = passport.authenticate("google", {
 const googleSuccess = asyncHandler(async (req, res) => {
   const { token } = req.user;
   res.cookie("token", token, cookieOptions);
-  return res.redirect("http://localhost:3000/");
+  return res.redirect(process.env.CLIENT_URL || "http://localhost:3000");
 });
 
 const logout = asyncHandler(async (req, res) => {
