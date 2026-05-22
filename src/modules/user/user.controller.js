@@ -11,6 +11,9 @@ const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("COOKIE OPTIONS:", JSON.stringify(cookieOptions));
+
 const register = asyncHandler(async (req, res) => {
   const { name, email, password, image, studentId, department, academicLevel } = req.body;
   const data = await registerUser({ name, email, password, image, studentId, department, academicLevel });
