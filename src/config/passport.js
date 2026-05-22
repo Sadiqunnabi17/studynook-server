@@ -9,10 +9,10 @@ const initializePassport = () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:5000/api/users/auth/google/callback",
-        // callbackURL: "api/users/google/callback",
+        callbackURL: process.env.NODE_ENV === "production"
+          ? "https://studynook-server-yxr0.onrender.com/api/users/auth/google/callback"
+          : "http://localhost:5000/api/users/auth/google/callback",
       },
-
       async (accessToken, refreshToken, profile, done) => {
         try {
           const user = await googleAuth({
