@@ -32,10 +32,12 @@ const googleCallback = passport.authenticate("google", {
 });
 
 const googleSuccess = asyncHandler(async (req, res) => {
-  console.log("GOOGLE SUCCESS REQ.USER:", JSON.stringify(req.user));
-  const token = req.user.token;
-  console.log("TOKEN:", token);
-  res.cookie("token", token, cookieOptions);
+  console.log("GOOGLE SUCCESS CALLED");
+  console.log("REQ USER:", JSON.stringify(req.user));
+  const token = req.user?.token;
+  const userToken = req.user?.user?.token;
+  console.log("TOKEN1:", token, "TOKEN2:", userToken);
+  res.cookie("token", token || userToken, cookieOptions);
   return res.redirect(process.env.CLIENT_URL || "http://localhost:3000");
 });
 
