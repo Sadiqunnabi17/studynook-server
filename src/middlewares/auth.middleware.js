@@ -6,8 +6,8 @@ console.log("AUTH MIDDLEWARE LOADED");
 const protect = async (req, res, next) => {
   try {
     
-    console.log("COOKIES:", req.cookies);        // ← add this
-    console.log("TOKEN:", req.cookies?.token);   // ← add this
+    console.log("COOKIES:", req.cookies);       
+    console.log("TOKEN:", req.cookies?.token);
     
     const token = req.cookies?.token;
 
