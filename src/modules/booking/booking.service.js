@@ -58,12 +58,10 @@ const cancelBooking = async (bookingId, userId) => {
   booking.status = "cancelled";
   await booking.save();
 
-  // Remove from user bookings array
   await User.findByIdAndUpdate(userId, {
     $pull: { bookings: bookingId },
   });
 
-  // Decrement booking count
   await Room.findByIdAndUpdate(booking.room, {
     $inc: { bookingCount: -1 },
   });

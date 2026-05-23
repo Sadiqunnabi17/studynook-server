@@ -66,7 +66,6 @@ const updateProfile = asyncHandler(async (req, res) => {
   return ApiResponse.success(res, user, "Profile updated successfully");
 });
 
-// Toggle wishlist (save/unsave a room)
 const toggleWishlist = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const user = await User.findById(req.user._id);
@@ -83,7 +82,6 @@ const toggleWishlist = asyncHandler(async (req, res) => {
   }
 });
 
-// Get wishlist
 const getWishlist = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).populate(
     "wishlist",

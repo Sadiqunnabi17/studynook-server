@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../modules/user/user.model");
 
-console.log("AUTH MIDDLEWARE LOADED"); // ← add this at top
+console.log("AUTH MIDDLEWARE LOADED");
 
 const protect = async (req, res, next) => {
   try {
@@ -19,10 +19,10 @@ const protect = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("DECODED:", decoded); // ← add this
+    console.log("DECODED:", decoded); 
     
     req.user = await User.findById(decoded.userId).select("-password");
-    console.log("USER:", req.user); // ← add this
+    console.log("USER:", req.user); 
     
     if (!req.user) {
       return res.status(401).json({
